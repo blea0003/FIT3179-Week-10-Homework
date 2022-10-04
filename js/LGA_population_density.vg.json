@@ -1,0 +1,80 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "params": [
+        {
+            "name": "Year_Selection",
+            "value": 2020,
+            "bind": {
+                "input": "range",
+                "min": 2001,
+                "max": 2020,
+                "step": 1,
+                "name": "Year"
+            }
+        },
+        {
+            "name": "Density_Selection",
+            "value": 0,
+            "bind": {
+                "input": "range",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "name": "People/KM^2"
+            }
+        }
+    ],
+    "vconcat": [
+        {
+            "width": 1280,
+            "height": 720,
+            "title": "Testing",
+            "projection": {"type": "equirectangular"},
+            "layer": [
+                {   
+                    "data": {
+                        "url": "LGA_2021_AUST_GDA94.json",
+                        "format": {
+                            "type": "topojson",
+                            "feature": "LGA_2021_AUST_GDA94"
+                        }
+                    }, 
+                    "transform": [
+                        {
+                            "lookup": "properties.LGA_CODE21",
+                            "from": {
+                                "data": {
+                                    "url": "../data/LGA_ERP_2001-2020.csv"
+                                },
+                                "key": "LGA_2021",
+                                "fields": ["Year", "OBS_VALUE"]
+                            }
+                        },
+                        {
+                            "calculate": "datum.OBS_VALUE/datum.properties.AREASQKM21",
+                            "as": "density"
+                        }
+                    ],
+                    "mark": {
+                        "type": "geoshape"
+                    },
+                    "encoding": {
+                        "color": {
+                            "field": "density",
+                            "type": "quantitative",
+                            "title": "People/KM^2",
+                            "scale": {
+                                "type": "log",
+                                "scheme": "yelloworangered"
+                            }
+                        },
+                        "tooltip": [
+                            {"field": "properties.LGA_NAME21", "type": "nominal", "title": "LGA"},
+                            {"field": "density", "type": "quantitative", "title": "People/KM^2"}
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
