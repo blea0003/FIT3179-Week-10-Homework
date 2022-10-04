@@ -3,7 +3,7 @@
     "params": [
         {
             "name": "Year_Selection",
-            "value": 2020,
+            "value": 2018,
             "bind": {
                 "input": "range",
                 "min": 2001,
@@ -11,70 +11,71 @@
                 "step": 1,
                 "name": "Year"
             }
-        },
-        {
-            "name": "Density_Selection",
-            "value": 0,
-            "bind": {
-                "input": "range",
-                "min": 0,
-                "max": 100,
-                "step": 1,
-                "name": "People/KM^2"
-            }
         }
-    ],
-    "vconcat": [
-        {
-            "width": 1280,
-            "height": 720,
-            "title": "Testing",
-            "projection": {"type": "equirectangular"},
-            "layer": [
-                {   
-                    "data": {
-                        "url": "LGA_2021_AUST_GDA94.json",
-                        "format": {
-                            "type": "topojson",
-                            "feature": "LGA_2021_AUST_GDA94"
-                        }
-                    }, 
-                    "transform": [
-                        {
-                            "lookup": "properties.LGA_CODE21",
-                            "from": {
-                                "data": {
-                                    "url": "../data/LGA_ERP_2001-2020.csv"
-                                },
-                                "key": "LGA_2021",
-                                "fields": ["Year", "OBS_VALUE"]
+    ],        
+    "width": 1080,
+    "height": 720,
+    "title": "Population Density of Local Government Areas (LGAs)",
+    "projection": {
+        "type": "equirectangular",
+        "center": [133.7751, -27],
+        "scale": 1100
+
+    },
+    "layer": [
+        {   
+            "data": {
+                "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/data/LGA_PD_2001-2020.csv"
+            },
+            "transform": [
+                {
+                    "lookup": "LGA_2021",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/js/LGA_2021_AUST_GDA94.json",
+                            "format": {
+                                "type": "topojson",
+                                "feature": "LGA_2021_AUST_GDA94"
                             }
-                        },
-                        {
-                            "calculate": "datum.OBS_VALUE/datum.properties.AREASQKM21",
-                            "as": "density"
-                        }
-                    ],
-                    "mark": {
-                        "type": "geoshape"
+                        }, 
+                        "key": "properties.LGA_CODE21"
                     },
-                    "encoding": {
-                        "color": {
-                            "field": "density",
-                            "type": "quantitative",
-                            "title": "People/KM^2",
-                            "scale": {
-                                "type": "log",
-                                "scheme": "yelloworangered"
-                            }
-                        },
-                        "tooltip": [
-                            {"field": "properties.LGA_NAME21", "type": "nominal", "title": "LGA"},
-                            {"field": "density", "type": "quantitative", "title": "People/KM^2"}
-                        ]
-                    }
+                    "as": "geo"
+                },
+                {
+                    "filter": "datum.Year == Year_Selection"
                 }
-            ]
-        }
+
+            ],
+            "mark": {
+                "type": "geoshape",
+                "stroke": "#fff",
+                "strokeWidth": 0.5
+            },
+            "encoding": {
+                "shape": {
+                    "field": "geo",
+                    "type": "geojson"
+                },
+                "color": {
+                    "field": "Population Density",
+                    "type": "quantitative",
+                    "title": "People/KM^2",
+                    "scale": {
+                        "type": "log",
+                        "scheme": "yelloworangered"
+                    }
+                },
+                "tooltip": [
+                    {"field": "geo.properties.STE_NAME21", "type": "nominal", "title": "State"},
+                    {"field": "geo.properties.LGA_NAME21", "type": "nominal", "title": "LGA"},
+                    {"field": "OBS_VALUE", "type": "quantitative", "title": "Population"},
+                    {"field": "Population Density", "type": "quantitative", "title": "People/KM^2"}
+                ]
+            }  
+        }               
+        
     ]
+        
+         
 }
