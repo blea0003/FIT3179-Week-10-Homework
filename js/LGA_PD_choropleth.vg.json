@@ -1,0 +1,258 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "params": [
+        {
+            "name": "Annotation_Selection",
+            "value": 1,
+            "bind": {
+                "input": "select",
+                "options": [1, 0],
+                "labels": ["Yes", "No"],
+                "name": "Annotations: "
+            }
+        },
+        {
+            "name": "Population_Selection",
+            "value": 0,
+            "bind": {
+                "input": "range",
+                "min": 0,
+                "max": 100000,
+                "step": 100,
+                "name": "Population Above: "
+            }
+        }
+    ],        
+    "vconcat": [
+        {
+            "width": "container",
+            "height": 720,
+            "projection": {
+                "type": "equirectangular",
+                "center": [133.7751, -8.5],
+                "scale": 1150 
+            },
+            "layer": [
+                {
+                    "data": {
+                        "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/js/STE_2021_AUST_GDA2020.json",
+                        "format": {
+                            "type": "topojson",
+                            "feature": "STE_2021_AUST_GDA2020"
+                        }
+                    }, 
+                    "mark": {
+                        "type": "geoshape",
+                        "fillOpacity": 0,
+                        "stroke": "grey",
+                        "strokeWidth": 0.5
+                    }
+                },
+                {   
+                    "data": {
+                        "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/data/LGA_PD_2001-2020.csv"
+                    },
+                    "transform": [
+                        {
+                            "lookup": "LGA_2021",
+                            "from": {
+                                "data": {
+                                    "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/js/LGA_2021_AUST_GDA94.json",
+                                    "format": {
+                                        "type": "topojson",
+                                        "feature": "LGA_2021_AUST_GDA94"
+                                    }
+                                }, 
+                                "key": "properties.LGA_CODE21"
+                            },
+                            "as": "geo"
+                        },
+                        {
+                            "filter": "datum.OBS_VALUE > Population_Selection"
+                        }
+                    ],
+                    "mark": {
+                        "type": "geoshape",
+                        "stroke": "#fff",
+                        "strokeWidth": 0.5
+                    },
+                    "encoding": {
+                        "shape": {
+                            "field": "geo",
+                            "type": "geojson"
+                        },
+                        "color": {
+                            "field": "Population_Density",
+                            "type": "quantitative",
+                            "title": "People/KM^2",
+                            "scale": {
+                                "type": "log",
+                                "scheme": "yelloworangered"
+                            }
+                        },
+                        "tooltip": [
+                            {"field": "geo.properties.STE_NAME21", "type": "nominal", "title": "State"},
+                            {"field": "geo.properties.LGA_NAME21", "type": "nominal", "title": "LGA"},
+                            {"field": "OBS_VALUE", "type": "quantitative", "title": "Population"},
+                            {"field": "Population_Density", "type": "quantitative", "title": "People/KM^2"}
+                        ]
+                    }  
+                },
+                {
+                    "data": {
+                        "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/js/GCCSA_2021_AUST_GDA2020.json",
+                        "format": {
+                            "type": "topojson",
+                            "feature": "GCCSA_2021_AUST_GDA2020"
+                        }
+                    }, 
+                    "mark": {
+                        "type": "geoshape",
+                        "fill": null,
+                        "stroke": "blue",
+                        "strokeWidth": 1,
+                        "opacity": {"expr": "Annotation_Selection"}
+                    }
+                },
+                {
+                    "data": {
+                        "values":[
+                            {
+                                "lat1": -37.8136, "lon1": 144.9631, "lat2": -41, "lon2":144, 
+                                "alignment": "right", "x_dis": -3, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Melbourne"],
+                                "body": "19% of Total Population"
+                            },
+                            {
+                                "lat1": -34.921230, "lon1": 138.599503, "lat2": -39, "lon2":136, 
+                                "alignment": "right", "x_dis": -3, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Adelaide"],
+                                "body": "12.7% of Total Population"
+                            },
+                            {
+                                "lat1": -31.953512, "lon1": 115.857048, "lat2": -31.953512, "lon2":113, 
+                                "alignment": "right", "x_dis": -3, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Perth"],
+                                "body": "8.58% of Total Population"
+                            },
+                            {
+                                "lat1": -12.462827, "lon1": 130.841782, "lat2": -10.1, "lon2":127, 
+                                "alignment": "center", "x_dis": 0, "y_dis": -5, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Darwin"],
+                                "body": "0.60% of Total Population"
+                            },
+                            {
+                                "lat1": -27.470125, "lon1": 153.021072, "lat2": -26.5, "lon2":154, 
+                                "alignment": "left", "x_dis": 3, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Brisbane"],
+                                "body": "19% of Total Population"
+                            },
+                            {
+                                "lat1": -33.865143, "lon1": 151.209900, "lat2": -33.865143, "lon2":153, 
+                                "alignment": "left", "x_dis": 3, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Sydney"],
+                                "body": "20.58% of Total Population"
+                            },
+                            {
+                                "lat1": -42.880554, "lon1": 147.324997, "lat2": -42.880554, "lon2":150, 
+                                "alignment": "left", "x_dis": 0, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Greater Hobart"],
+                                "body": "0.93% of Total Population"
+                            },
+                            {
+                                "lat1": -35.473469, "lon1": 149.012375, "lat2": -37, "lon2":152, 
+                                "alignment": "left", "x_dis": 3, "y_dis": 0, 
+                                "col": "blue", "line_col": "blue", "f_size": 12, "f_weight": "normal", 
+                                "head": ["Australian Capital Territory"],
+                                "body": "1.6% of Total Population"
+                            },
+                            {
+                                "lat1": -25.274399, "lon1": 133.775131, "lat2": -25.274399, "lon2":133.775131, "f_size": 14, "f_weight": "normal", 
+                                "alignment": "center", "x_dis": 0, "y_dis": 0, 
+                                "col": "black", "line_col": "darkgrey",
+                                "head": ["Most of Australia is sparsely populated.", "Particularly towards the center."],
+                                "body": "Arid, Unhospitable land is what makes up the majority of Australian land"
+                            },
+                            {
+                                "lat1": -11, "lon1": 109, "lat2": -11, "lon2":109, 
+                                "alignment": "left", "x_dis": 0, "y_dis": 0, 
+                                "col": "blue", "line_col": null, "f_size": 16, "f_weight": "bold",
+                                "head": ["83% of all Australians", "live in these 8 'Greater' city areas."],
+                                "body": "Mainly concentrated on the East Coast"
+                            },
+                            {
+                                "lat1": -11, "lon1": 153, "lat2": -11, "lon2":153, 
+                                "alignment": "left", "x_dis": 0, "y_dis": 0, 
+                                "col": "grey", "line_col": null, "f_size": 13, "f_weight": "normal",
+                                "head": ["*Hover for more"]
+                            }
+                        ]
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "rule",
+                                "opacity": {"expr": "Annotation_Selection"}
+                            },
+                            "encoding": {
+                                "color": {
+                                    "value": {"expr": "datum.line_col"}
+                                },
+                                "latitude": {
+                                    "field": "lat1",
+                                    "type": "quantitative"
+                                },
+                                "longitude": {
+                                    "field": "lon1",
+                                    "type": "quantitative"
+                                },
+                                "latitude2": {
+                                    "field": "lat2"
+                                },
+                                "longitude2": {
+                                    "field": "lon2"
+                                }
+                            }
+                        },
+                        {
+                            "mark": {
+                                "type": "text",
+                                "align": {"expr": "datum.alignment"},
+                                "dx": {"expr": "datum.x_dis"},
+                                "dy": {"expr": "datum.y_dis"},
+                                "color": {"expr": "datum.col"},
+                                "opacity": {"expr": "Annotation_Selection"},
+                                "fontSize": {"expr": "datum.f_size"},
+                                "fontWeight": {"expr": "datum.f_weight"}
+                            },
+                            "encoding": {
+                                "text": {
+                                    "field": "head"
+                                },
+                                "latitude": {
+                                    "field": "lat2",
+                                    "type": "quantitative"
+                                },
+                                "longitude": {
+                                    "field": "lon2",
+                                    "type": "quantitative"
+                                },
+                                "tooltip": {
+                                    "field": "body", "type": "nominal"
+                                }
+                            }
+                        }
+                    ]
+                    
+                }                             
+            ]
+        }
+    ]       
+}

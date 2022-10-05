@@ -1,0 +1,59 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "data": {
+        "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/data/LGA_PD_2001-2020.csv"
+    },
+    "transform": [
+        {
+            "lookup": "LGA_2021",
+            "from": {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/js/LGA_2021_AUST_GDA94.json",
+                    "format": {
+                        "type": "topojson",
+                        "feature": "LGA_2021_AUST_GDA94"
+                    }
+                }, 
+                "key": "properties.LGA_CODE21",
+                "fields": ["properties.STE_NAME21"]
+            }
+        },
+        {
+            "filter":{
+            "field": "properties.STE_NAME21", 
+            "oneOf": ["New South Wales", "Victoria", "Queensland", "South Australia", "Western Australia", "Tasmania", "Northern Territory"]
+        }
+        }
+    ],
+    "mark": {
+        "type": "boxplot",
+        "extent": "min-max"
+    },
+    "encoding": {
+        "color": {
+            "field": "properties.STE_NAME21",
+            "type": "nominal",
+            "scale": {
+                "scheme": "dark2"
+            }
+        },
+        "x": {
+            "field": "Population_Density",
+            "type": "quantitative",
+            "scale": {
+                "type": "log"
+            }
+        },
+        "y": {
+            "field": "properties.STE_NAME21",
+            "type": "nominal",
+            "title": null
+        }
+    },
+    "config": {
+        "legend": {
+            "disable": true
+        }
+    }
+}
