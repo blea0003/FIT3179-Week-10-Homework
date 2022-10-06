@@ -1,0 +1,231 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "autosize":"fit-x",
+    "data": {
+        "url": "https://raw.githubusercontent.com/blea0003/FIT3179-Week-10-Homework/main/data/STE_ERP_2000-2020.csv"
+    },
+    "transform": [
+        {
+            "filter":{
+                "field": "Code", 
+                "oneOf": ["1", "2", "3", "4", "5", "6"]
+            }
+        }
+    ],  
+    "vconcat": [
+        {
+            "title": {
+                "text": "Sum of Growth (Persons)"
+            },
+            "width": "container",
+            "encoding": {
+                "x": { 
+                    "field": "Date",
+                    "type": "temporal",
+                    "title": null,
+                    "axis": null
+                }
+            },
+            "layer": [
+                {
+                    "encoding": {
+                        "y": {
+                            "aggregate": "sum", 
+                            "field": "Change_Amount_Over_Previous_Year",
+                            "title": "Persons"
+                        },
+                        "color": {
+                            "field": "Region",
+                            "type": "nominal",
+                            "scale": {
+                                "scheme": "set2"
+                            }
+                        },
+                        "opacity": {
+                            "condition": {
+                                "param": "State_Selection", 
+                                "value":1
+                            },
+                            "value": 0.2
+                        }
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "area"
+                            },
+                            "params": [
+                                {
+                                    "name": "State_Selection",
+                                    "select": {
+                                        "type": "point",
+                                        "fields": ["Region"]
+                                    },
+                                    "bind": "legend"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "transform": [
+                        {
+                            "pivot": "Region",
+                            "value": "Change_Amount_Over_Previous_Year",
+                            "groupby": ["Date"]
+                        }
+                    ],
+                    "mark": {
+                        "type": "rule"
+                    },
+                    "params": [
+                        {
+                            "name": "Hover_Selection",
+                            "select": {
+                                "type": "point",
+                                "fields": ["Date"],
+                                "nearest": true,
+                                "on": "mouseover"
+                            }
+                        }
+                    ],
+                    "encoding": {
+                        "opacity": {
+                            "condition": {
+                                "value": 0.3,
+                                "param": "Hover_Selection",
+                                "empty": false
+                            },
+                            "value": 0
+                        },
+                        "tooltip": [
+                            {"field": "Date", "type": "temporal"},
+                            {"field": " New South Wales", "type": "quantitative"},
+                            {"field": " Queensland", "type": "quantitative"},
+                            {"field": " South Australia", "type": "quantitative"},
+                            {"field": " Tasmania", "type": "quantitative"},
+                            {"field": " Victoria", "type": "quantitative"},
+                            {"field": " Western Australia", "type": "quantitative"}
+                        ]
+                    }
+                } 
+            ]
+        },
+        {
+            "title": {
+                "text": "Percentage Change (%)"
+            },
+            "width": "container",
+            "encoding": {
+                "x": {
+                    "field": "Date",
+                    "type": "temporal"
+                }
+            },
+            "layer": [
+                {
+                    "encoding": {
+                        "y": {
+                            "field": "Change_Percent_Over_Previous_Year",
+                            "type": "quantitative",
+                            "title": "Percent (%)"
+                        },
+                        "color": {
+                            "field": "Region",
+                            "scale": {
+                                "scheme": "set2"
+                            }
+                        },
+                        "opacity": {
+                            "condition": {
+                                "param": "State_Selection", 
+                                "value":1
+                            },
+                            "value": 0.2
+                        }
+                    },
+                    "layer": [
+                        {
+                            "mark": {
+                                "type": "line"
+                            }
+                        },
+                        {
+                            "transform": [
+                                {
+                                    "filter": {
+                                        "param": "Hover_Selection",
+                                        "empty": false
+                                    }
+                                }
+                            ],
+                            "mark": "point"
+                        }
+                    ]
+                },
+                {
+                    "transform": [
+                        {
+                            "pivot": "Region",
+                            "value": "Change_Percent_Over_Previous_Year",
+                            "groupby": ["Date"]
+                        }
+                    ],
+                    "mark": {
+                        "type": "rule"
+                    },
+                    "params": [
+                        {
+                            "name": "Hover_Selection",
+                            "select": {
+                                "type": "point",
+                                "fields": ["Date"],
+                                "nearest": true,
+                                "on": "mouseover",
+                                "clear": "mouseout"
+                            }
+                        }
+                    ],
+                    "encoding": {
+                        "opacity": {
+                            "condition": {
+                                "value": 0.3,
+                                "param": "Hover_Selection",
+                                "empty": false
+                            },
+                            "value": 0
+                        },
+                        "tooltip": [
+                            {"field": "Date", "type": "temporal"},
+                            {"field": " New South Wales", "type": "quantitative"},
+                            {"field": " Queensland", "type": "quantitative"},
+                            {"field": " South Australia", "type": "quantitative"},
+                            {"field": " Tasmania", "type": "quantitative"},
+                            {"field": " Victoria", "type": "quantitative"},
+                            {"field": " Western Australia", "type": "quantitative"}
+                        ]
+                    }
+                }
+            ]
+            
+        }
+    ],
+    "config": {
+        "title": {
+            "anchor":"start",
+            "fontWeight": "lighter",
+            "fontSize": 13,
+            "color": "grey"
+        },
+
+        "axis": {
+            "grid": false
+        },
+        "axisY": {
+            "title": null
+        },
+        "view": {
+            "stroke": null
+        }
+    }   
+}

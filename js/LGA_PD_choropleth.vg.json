@@ -191,7 +191,8 @@
                                 "lat1": -11, "lon1": 153, "lat2": -11, "lon2":153, 
                                 "alignment": "left", "x_dis": 0, "y_dis": 0, 
                                 "col": "grey", "line_col": null, "f_size": 13, "f_weight": "normal",
-                                "head": ["*Hover for more"]
+                                "head": ["*Hover for more"],
+                                "body": "UwU"
                             }
                         ]
                     },
@@ -254,5 +255,10 @@
                 }                             
             ]
         }
-    ]       
+    ],
+    "config": {
+        "view": {
+            "stroke": null
+        }
+    }     
 }
