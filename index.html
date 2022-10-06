@@ -8,8 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
 
   <!-- Import pure.css -->
-  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
-   integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@2.1.0/build/pure-min.css" 
+   integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Google font -->
@@ -30,65 +30,58 @@
     <div class="pure-g">
       <div class="pure-u-1-1">
         <h1>"Australian Population"</h1>
-        <p>This page demonstrates how you can use pure.css grid for your layout.</p>
+        <p>
+          An analysis of the various aspects of Australia's population.<br>
+
+
+        </p>
       </div>
     </div>
     <!-- end Title grid group -->
+
+    <!-- Geographical Population Distribution grid group -->
+    <div class="pure-g">
+
+      <div class="pure-u-1-1">
+        <h2>Geographical Distribution of Australian Population</h2>
+        <p>
+          Average Population per Square Kilometer by Local Government Area (LGA) [2001-2020]
+        </p>
+        <div id="LGA_PD_choropleth" class="vis-container"></div>
+
+      </div>
+    </div>
+    <!-- end Geographical Population Distribution grid group -->
 
     <!-- Population Growth grid group -->
     <div class="pure-g">
       <div class="pure-u-1-1">
         <h2>Growth of Australian Population</h2>
         <p>
-          Fig. 1: Blah
+          Population Growth of States over Time [2000-2020]          
         </p>
+        <div id="STE_ERP_area_line" class="vis-container"></div>
       </div>
     </div>
     <!-- end Population Growth grid group -->
-
-    <!-- Population Distribution grid group -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <h2>Distribution of Australian Population</h2>
-        <p>
-          Fig. 3: Average Population per Square Kilometer by Local Government Area (LGA) [2001-2020]
-        </p>
-        <div id="LGA_PD_choropleth" class="vis-container"></div>
-
-      </div>
-    </div>
-    <!-- end Population Distribution grid group -->
-
-    <!-- pure grid group -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div class="description description-left">
-          <h2>Two Columns Layout</h2>
-          <p>The first column contains text and the second column contains a visualisation.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Massa sapien faucibus et molestie ac feugiat sed. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Massa sapien faucibus et molestie ac feugiat sed. </p>
-        </div>
-      </div>
-      <div class="pure-u-1-2">
-        <div id="LGA_PD_boxplot" class="vis-container"></div>
-      </div>
-    </div>
-    <!-- end pure grid group -->
-
 
   </div>
   
   <script type="text/javascript">
 
-    var spec2 = "js/LGA_PD_choropleth.vg.json";
-    var spec3 = "js/LGA_PD_boxplot.vg.json";
+    var vis1 = "js/LGA_PD_choropleth.vg.json";
+    var vis3 = "js/STE_ERP_area_line.vg.json"
+    var vis4 = "js/STE_ERP_area.vg.json";
 
-    vegaEmbed('#LGA_PD_choropleth', spec2).then(function(result) {
+    vegaEmbed('#LGA_PD_choropleth', vis1).then(function(result) {
       // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
     }).catch(console.error);
 
-    vegaEmbed('#LGA_PD_boxplot', spec3).then(function(result) {
+    vegaEmbed('#STE_ERP_area_line', vis3).then(function(result) {
+      // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+    }).catch(console.error);
+
+    vegaEmbed('#STE_ERP_area', vis4).then(function(result) {
       // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
     }).catch(console.error);
   </script>
